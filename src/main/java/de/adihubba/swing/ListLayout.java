@@ -1,31 +1,28 @@
 package de.adihubba.swing;
 
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-
-import javax.swing.SwingConstants;
-
 import de.adihubba.ObjectUtils;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
  * Plain layout putting all components in a column from top to bottom.
  * Using orientation SwingConstants.HORIZONTAL components will be put in a single row from left to right.
- * Similar to BoxLayout, but components will keep their size and position when more space is available. 
+ * Similar to BoxLayout, but components will keep their size and position when more space is available.
  */
 public class ListLayout implements LayoutManager2 {
 
+    private final int gap;
+    private final boolean fillHorizontal;
+    private final int orientation;
     private Dimension preferredSize = new Dimension();
-    private int       gap;
-    private boolean   fillHorizontal;
-    private boolean   valid         = false;
-    private int       orientation;
+    private boolean valid = false;
 
-    /** vertical layout (single column), no horizontal stretching, no gap between components */
+    /**
+     * vertical layout (single column), no horizontal stretching, no gap between components
+     */
     public ListLayout() {
         this(SwingConstants.VERTICAL, false, 0);
     }
@@ -42,18 +39,18 @@ public class ListLayout implements LayoutManager2 {
         this(SwingConstants.VERTICAL, fillHorizontal, gap);
     }
 
-    /** 
-     * @param orientation   see SwingConstants.VERTICAL, SwingConstants.HORIZONTAL
-     * @param gap           distance between components in pixel
+    /**
+     * @param orientation see SwingConstants.VERTICAL, SwingConstants.HORIZONTAL
+     * @param gap         distance between components in pixel
      */
     public ListLayout(int orientation, int gap) {
         this(orientation, false, gap);
     }
 
-    /** 
-     * @param orientation   see SwingConstants.VERTICAL, SwingConstants.HORIZONTAL
-     * @param fill          stretch all components
-     * @param gap           distance between components in pixel
+    /**
+     * @param orientation see SwingConstants.VERTICAL, SwingConstants.HORIZONTAL
+     * @param fill        stretch all components
+     * @param gap         distance between components in pixel
      */
     public ListLayout(int orientation, boolean fill, int gap) {
         this.orientation = orientation;

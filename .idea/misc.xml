@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="de.adihubba.delauney.Point" method="areCollinear" />
+    <pattern value="de.adihubba.delauney.BoundingBox" />
+    <pattern value="de.adihubba.delauney.BoundingBox" method="BoundingBox" />
+    <pattern value="de.adihubba.javafx.jfx3d.MeshImageBuilder" method="calculateZValueInTriangle" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="calcVoronoiCell" />
+    <pattern value="de.adihubba.delauney.Circle" />
+    <pattern value="de.adihubba.delauney.Circle" method="Circle" />
+    <pattern value="de.adihubba.delauney.Point" method="circumcenter" />
+    <pattern value="de.adihubba.delauney.DelauneyUtils" method="closeQuietly" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="contains" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="DelaunayTriangulation" />
+    <pattern value="de.adihubba.delauney.DelauneyUtils" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="deletePoint" />
+    <pattern value="de.adihubba.delauney.Point" method="distance2" />
+    <pattern value="de.adihubba.delauney.Point" method="distance3D" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="findClosePoint" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="getConvexHullSize" />
+    <pattern value="de.adihubba.javafx.jfx3d.MeshCalculationComposite" method="getDataPoints" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="getModeCounter" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" method="getValue" />
+    <pattern value="de.adihubba.delauney.Triangle" method="getZ" />
+    <pattern value="de.adihubba.delauney.GridIndex" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="indexData" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" method="isNoSelected" />
+    <pattern value="de.adihubba.delauney.DelauneyUtils" method="isNumeric" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" method="isYesSelected" />
+    <pattern value="de.adihubba.swing.ListLayout" />
+    <pattern value="de.adihubba.swing.ListLayout" method="ListLayout" />
+    <pattern value="de.adihubba.swing.StarterFrame" method="main" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="maxBoundingBox" />
+    <pattern value="de.adihubba.delauney.BoundingBox" method="maxX" />
+    <pattern value="de.adihubba.delauney.BoundingBox" method="maxY" />
+    <pattern value="de.adihubba.javafx.jfx3d.Mesh3DChartPanel" />
+    <pattern value="de.adihubba.javafx.jfx3d.MeshCalculationComposite" />
+    <pattern value="de.adihubba.javafx.jfx3d.MeshImageBuilder" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="minBoundingBox" />
+    <pattern value="de.adihubba.delauney.Triangle" method="neighbor" />
+    <pattern value="de.adihubba.delauney.Point" />
+    <pattern value="de.adihubba.delauney.Point" method="Point" />
+    <pattern value="de.adihubba.delauney.GridIndex.PointInt" />
+    <pattern value="de.adihubba.delauney.GridIndex.PointInt" method="PointInt" />
+    <pattern value="de.adihubba.swing.radiobutton.RadioButtonPanel" />
+    <pattern value="de.adihubba.swing.radiobutton.RadioButtonPanel" method="removeActionListener" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="removeIndex" />
+    <pattern value="de.adihubba.javafx.jfx3d.Wall" method="setFill" />
+    <pattern value="de.adihubba.javafx.jfx3d.Mesh3DChartPanel" method="setImageSize" />
+    <pattern value="de.adihubba.javafx.jfx3d.Mesh3DChartPanel" method="setNumberFormatter" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" method="setValue" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" method="setYesSelected" />
+    <pattern value="de.adihubba.swing.StarterFrame" />
+    <pattern value="de.adihubba.delauney.Triangle" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="trianglesIterator" />
+    <pattern value="de.adihubba.delauney.UnsupportedFormatException" />
+    <pattern value="de.adihubba.delauney.UnsupportedFormatException" method="UnsupportedFormatException" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="verticesIterator" />
+    <pattern value="de.adihubba.javafx.jfx3d.Wall" />
+    <pattern value="de.adihubba.javafx.jfx3d.Wall" method="Wall" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButton" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButtonHorPanel" />
+    <pattern value="de.adihubba.swing.radiobutton.YesNoRadioButtonHorPanel" method="YesNoRadioButtonHorPanel" />
+    <pattern value="de.adihubba.delauney.DelaunayTriangulation" method="z" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8.0_231" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/classes" />
+  </component>
+</project>

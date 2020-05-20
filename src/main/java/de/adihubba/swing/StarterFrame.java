@@ -1,71 +1,116 @@
 package de.adihubba.swing;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-
 import de.adihubba.delauney.Point;
 import de.adihubba.javafx.jfx3d.DelauneyModifier;
 import de.adihubba.javafx.jfx3d.Mesh3DChartPanel;
 import javafx.geometry.Point3D;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import static java.lang.Math.exp;
+import static java.lang.Math.sin;
 
 public class StarterFrame extends JFrame {
 
-    public static void main(String[] args) {
-        new StarterFrame().showChart();
-    }
-
-    // constants to calculate gauss probability density function
-    private final double sdX   = 1;
-    private final double sdY   = 1;
-    private final double meanX = 0;
-    private final double meanY = 0;
-    private final double p     = 0.0;
-
-    private final double a     = 1.0 / (2.0 * Math.PI * sdX * sdY * Math.sqrt(1.0 - (p * p)));
-    private final double b     = -1.0 / (2.0 - (p * p * 2.0));
+    private static final List<Point3D> final_Points = new ArrayList<>();
 
     public StarterFrame() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public void showChart() {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        double time;
+        System.out.println("Введите значение параметра времени для графика");
+        time = Double.parseDouble(sc.nextLine());
+        System.out.printf("Time == %f \n", time);
+        System.out
+                .println("Введите адрес папки с файлами, содержащими координаты, или оставьте следующую строку пустой");
+        File[] files = new File(sc.nextLine()).listFiles();
+        if (files == null) System.out.println("Данные о файлах не были введены");
+        else {
+            int c = 1;
+            for (File file : files) {
+                try {
+                    final_Points.addAll(getPointsFromFile(file));
+                    System.out.println(file.toString() + " --- File No. " + c++);
+                } catch (IOException e) {
+                    System.out.println("Ошибка с файлом");
+                }
+            }
+        }
+        new StarterFrame().showChart(time);
+    }
+
+    public static List<Point3D> getPointsFromFile(File file) throws IOException {
+        List<String> lines = Files.lines(file.toPath()).collect(Collectors.toList());
+        List<Point3D> points = new ArrayList<>();
+
+        for (int i = 0; i < lines.size(); i++) {
+            String[] words = lines.get(i).split(" ");
+            for (int j = 0; j < words.length; j++) {
+                points.add(new Point3D(
+                        (float) (j * Math.PI) / (words.length - 1),
+                        Float.parseFloat(words[j]),
+                        (float) (i * Math.PI) / (lines.size() - 1)
+                ));
+            }
+        }
+        return points;
+    }
+
+    public void showChart(double time) {
         final Mesh3DChartPanel chart = new Mesh3DChartPanel();
+        //region chart
         chart.setDelauneyModifier(new MyDelauneyModifier());
         chart.setAxisTitleX("X-Axis");
         chart.setAxisTitleY("Y-Axis");
         chart.setAxisTitleZ("Z-Axis");
         chart.addMeshControlPanel();
-        chart.showMeshPanel(getPointsForGauss());
+
+        chart.showMeshPanel(getPointsForPlot(time));
+        //endregion
 
         getContentPane().add(chart);
         setSize(1200, 800);
         setVisible(true);
     }
 
-    private List<Point3D> getPointsForGauss() {
-        List<Point3D> result = new ArrayList<Point3D>();
-        for (double x = -3.0; x <= 3.0; x = x + 0.20) {
-            for (double y = -3.0; y <= 3.0; y = y + 0.20) {
-                result.add(new Point3D(x, calculatePDF(x, y), y));
+    @SuppressWarnings("SameReturnValue")
+    private List<Point3D> getPointsForPlot(double time) {
+        List<Point3D> result = new ArrayList<>();
+        double lower_bound = 0;
+        double upper_bound = Math.PI;
+        int dots_count = 100;
+        double step = (upper_bound - lower_bound) / (double) dots_count;
+        for (double x = 0; x <= Math.PI; x += step) {
+            for (double y = 0; y <= Math.PI; y += step) {
+                result.add(new Point3D(x, calculateFunc(x, y, time), y));
             }
         }
-        return result;
-    }
-
-    private double calculatePDF(double x, double y) {
-        double c = Math.pow(x - meanX, 2.0) / (sdX * sdX);
-        double d = Math.pow(y - meanY, 2.0) / (sdY * sdY);
-        double e = -2.0 * p * (x * meanX) * (y * meanY) / (sdX * sdY);
-
-        return a * Math.exp(b * (c + d + e));
+        final_Points.addAll(result);
+        return final_Points;
     }
 
     /**
-     * Change Y and Z axis 
+     * @param time - time parameter
+     * @return f(x, y, t) = (e^(-t)-e^(-2t)) * sin x * sin y
+     */
+
+    private double calculateFunc(double x, double y, double time) {
+        return (exp(-time) - exp(-2 * time)) * sin(x) * sin(y);
+    }
+
+    /**
+     * Change Y and Z axis
      */
     public static class MyDelauneyModifier implements DelauneyModifier {
 

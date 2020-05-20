@@ -1,11 +1,9 @@
 package de.adihubba.swing.radiobutton;
 
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
 
 
 public class YesNoRadioButtonHorPanel extends RadioButtonPanel implements YesNoRadioButton {
@@ -28,7 +26,18 @@ public class YesNoRadioButtonHorPanel extends RadioButtonPanel implements YesNoR
     }
 
     /**
+     * getter for Yes
+     *
+     * @return true if yes is selected
+     */
+    @Override
+    public boolean isYesSelected() {
+        return this.optYes.isSelected();
+    }
+
+    /**
      * Setter for Yes/No.
+     *
      * @param yes New value of property optYes.
      */
     @Override
@@ -38,30 +47,13 @@ public class YesNoRadioButtonHorPanel extends RadioButtonPanel implements YesNoR
     }
 
     /**
-     * getter for Yes
-     * @return true if yes is selected
-     */
-    @Override
-    public boolean isYesSelected() {
-        return this.optYes.isSelected();
-    }
-
-    /**
      * getter for No
+     *
      * @return true if no is selected
      */
     @Override
     public boolean isNoSelected() {
         return this.optNo.isSelected();
-    }
-
-    @Override
-    public void setValue(Boolean value) {
-        if (value == null) {
-            deselect();
-        } else {
-            setYesSelected(value.booleanValue());
-        }
     }
 
     @Override
@@ -77,8 +69,18 @@ public class YesNoRadioButtonHorPanel extends RadioButtonPanel implements YesNoR
     }
 
     @Override
+    public void setValue(Boolean value) {
+        if (value == null) {
+            deselect();
+        }
+        else {
+            setYesSelected(value);
+        }
+    }
+
+    @Override
     protected List<JRadioButton> createButtons() {
-        List<JRadioButton> buttons = new ArrayList<JRadioButton>();
+        List<JRadioButton> buttons = new ArrayList<>();
 
         optYes = new JRadioButton("Yes");
         optYes.setBounds(0, 0, 60, 20);

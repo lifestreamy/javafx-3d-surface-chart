@@ -1,8 +1,8 @@
 package de.adihubba.javafx.jfx3d;
 
 
-import javafx.geometry.Point3D;
 import de.adihubba.delauney.Point;
+import javafx.geometry.Point3D;
 
 
 /**
@@ -11,8 +11,8 @@ import de.adihubba.delauney.Point;
  */
 public interface DelauneyModifier {
 
-    public Point convertPoint3d4Delauney(Point3D point);
+    Point convertPoint3d4Delauney(Point3D point);
 
-    public Point3D convertPointFromDelauney(Point coord);
+    Point3D convertPointFromDelauney(Point coord);
 
 }

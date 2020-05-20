@@ -6,6 +6,6 @@ package de.adihubba.swing;
  */
 public interface ValueChangedListener {
 
-    public void valueChanged(Object lastValue, Object newValue, Object source);
+    void valueChanged(Object lastValue, Object newValue, Object source);
 
 }

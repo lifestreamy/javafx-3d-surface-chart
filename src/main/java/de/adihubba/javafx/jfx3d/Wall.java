@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Wall extends Pane {
 
-    private Rectangle wall;
+    private final Rectangle wall;
 
     public Wall(double size) {
         this(size, 0.0, Color.BLACK);
@@ -39,7 +39,7 @@ public class Wall extends Pane {
         double zTranslate = 0;
         double lineWidth = 1.0;
 
-        Line line = null;
+        Line line;
         for (int y = 0; ObjectUtils.smallerOrEqualsDoublePrecision(y, size); y += size / 10) {
             line = new Line(0, 0, size, 0);
             line.setStroke(gridColor);

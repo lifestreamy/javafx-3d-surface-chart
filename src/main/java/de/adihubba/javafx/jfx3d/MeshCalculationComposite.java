@@ -1,10 +1,10 @@
 package de.adihubba.javafx.jfx3d;
 
 
+import javafx.geometry.Point3D;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.geometry.Point3D;
 
 
 /**
@@ -12,21 +12,19 @@ import javafx.geometry.Point3D;
  */
 public class MeshCalculationComposite {
 
-    private final List<Point3D>    dataPoints;
-    private final List<Point3D>    normalizedPoints;
+    private final List<Point3D> dataPoints;
+    private final List<Point3D> normalizedPoints;
     private final List<Triangle3D> triangle3DList;
-
-    private double                 minX  = Double.MAX_VALUE;
-    private double                 maxX  = Double.MIN_VALUE;
-    private double                 minY  = Double.MAX_VALUE;
-    private double                 maxY  = Double.MIN_VALUE;
-    private double                 minZ  = Double.MAX_VALUE;
-    private double                 maxZ  = Double.MIN_VALUE;
-
-    private final int              size;
-    private double                 sizeX = 0.0;
-    private double                 sizeY = 0.0;
-    private double                 sizeZ = 0.0;
+    private final int size;
+    private final double sizeX;
+    private final double sizeY;
+    private final double sizeZ;
+    private double minX = Double.MAX_VALUE;
+    private double maxX = Double.MIN_VALUE;
+    private double minY = Double.MAX_VALUE;
+    private double maxY = Double.MIN_VALUE;
+    private double minZ = Double.MAX_VALUE;
+    private double maxZ = Double.MIN_VALUE;
 
     private MeshCalculationComposite(List<Point3D> dataPoints, int size) {
         this.dataPoints = dataPoints;
@@ -41,11 +39,11 @@ public class MeshCalculationComposite {
             maxZ = Math.max(maxZ, point3d.getZ());
         }
         sizeX = maxX - minX;
-        sizeY = maxY - minY;
+        sizeY = 0.25;
         sizeZ = maxZ - minZ;
 
         // normalize points according to coordinate system size
-        normalizedPoints = new ArrayList<Point3D>(dataPoints.size());
+        normalizedPoints = new ArrayList<>(dataPoints.size());
         for (Point3D point : dataPoints) {
             double x = (point.getX() - minX) / sizeX * size;
             double y = (point.getY() - minY) / sizeY * size;
@@ -53,7 +51,7 @@ public class MeshCalculationComposite {
             normalizedPoints.add(new Point3D(x, y, z));
         }
 
-        triangle3DList = new ArrayList<Triangle3D>(dataPoints.size() / 2);
+        triangle3DList = new ArrayList<>(dataPoints.size() / 2);
     }
 
     public static MeshCalculationComposite of(List<Point3D> dataPoints, int size) {

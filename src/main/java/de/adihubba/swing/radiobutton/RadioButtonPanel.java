@@ -1,32 +1,27 @@
 package de.adihubba.swing.radiobutton;
 
+import de.adihubba.ObjectUtils;
+import de.adihubba.swing.ListLayout;
+import de.adihubba.swing.ValueChangedListener;
+
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-
-import de.adihubba.ObjectUtils;
-import de.adihubba.swing.ListLayout;
-import de.adihubba.swing.ValueChangedListener;
 
 
 /**
  * RadioButtonPanel
  */
 public abstract class RadioButtonPanel extends JPanel {
-    
-    private final List<JRadioButton>        buttons;
-    protected ButtonGroup                   buttonGroup;
-    protected boolean                       allowDeselection;
-    private int                             orientation;
-    private final Set<ValueChangedListener> valueChangedListeners = new HashSet<ValueChangedListener>();
-    private Boolean                         lastValue;
+
+    protected final ButtonGroup buttonGroup;
+    protected final boolean allowDeselection;
+    private final List<JRadioButton> buttons;
+    private final int orientation;
+    private final Set<ValueChangedListener> valueChangedListeners = new HashSet<>();
+    private Boolean lastValue;
 
     public RadioButtonPanel() {
         this(SwingConstants.HORIZONTAL, false);
@@ -34,7 +29,7 @@ public abstract class RadioButtonPanel extends JPanel {
 
     /**
      * @param allowDeselection if true will allow selected choices to be deselected.
-     * @param orientation layout buttons in a row (SwingConstants.HORIZONTAL) or a column (SwingConstants.VERTICAL)
+     * @param orientation      layout buttons in a row (SwingConstants.HORIZONTAL) or a column (SwingConstants.VERTICAL)
      */
     public RadioButtonPanel(int orientation, boolean allowDeselection) {
         this.buttons = createButtons();
@@ -50,15 +45,15 @@ public abstract class RadioButtonPanel extends JPanel {
         }
         initListeners();
     }
-    
-    private void initListeners(){
-        this.addActionListener(e-> handleValueChanged());
+
+    private void initListeners() {
+        this.addActionListener(e -> handleValueChanged());
     }
 
     private void initModels() {
         if (allowDeselection) {
             for (JRadioButton button : buttons) {
-                button.setModel(new DeselectableToggleButtonModel());
+                button.setModel(new SelectableToggleButtonModel());
             }
         }
     }
@@ -67,17 +62,12 @@ public abstract class RadioButtonPanel extends JPanel {
         this.buttonGroup.clearSelection();
     }
 
-
-    /**
-     * delegate call to buttons
-     * @param listener
-     */
     public void addActionListener(ActionListener listener) {
         for (JRadioButton button : buttons) {
             button.addActionListener(listener);
         }
     }
-    
+
     private void handleValueChanged() {
         //no listeners
         if (valueChangedListeners.isEmpty()) {
@@ -92,37 +82,33 @@ public abstract class RadioButtonPanel extends JPanel {
             setLastValue(newValue);
         }
     }
-    
-    private final void notifyValueChangedListeners(Boolean oldValue, Boolean newValue) {
+
+    private void notifyValueChangedListeners(Boolean oldValue, Boolean newValue) {
         for (ValueChangedListener listener : valueChangedListeners) {
             listener.valueChanged(oldValue, newValue, this);
         }
     }
-    
+
     abstract protected Boolean getValue();
-    
+
     private boolean valueChanged(Boolean oldValue, Boolean newValue) {
         return !ObjectUtils.equalsObject(oldValue, newValue);
     }
-    
-    private final void setLastValue(Boolean value) {
+
+    private Boolean getLastValue() {
+        return this.lastValue;
+    }
+
+    private void setLastValue(Boolean value) {
         this.lastValue = value;
     }
 
-    private final Boolean getLastValue() {
-        return this.lastValue;
-    }
-    
     public final void addValueChangedListener(ValueChangedListener listener) {
         if (listener != null) {
             valueChangedListeners.add(listener);
         }
     }
 
-    /**
-     * delegate call to buttons
-     * @param listener
-     */
     public void removeActionListener(ActionListener listener) {
         for (JRadioButton button : buttons) {
             button.removeActionListener(listener);
@@ -149,7 +135,7 @@ public abstract class RadioButtonPanel extends JPanel {
 
     abstract protected List<JRadioButton> createButtons();
 
-    static public class DeselectableToggleButtonModel extends JToggleButton.ToggleButtonModel {
+    static public class SelectableToggleButtonModel extends JToggleButton.ToggleButtonModel {
 
         @Override
         public void setSelected(boolean select) {
@@ -164,7 +150,7 @@ public abstract class RadioButtonPanel extends JPanel {
 
             super.setSelected(select);
         }
-        
+
     }
 
 }

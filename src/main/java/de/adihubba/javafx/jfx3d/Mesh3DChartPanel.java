@@ -1,19 +1,14 @@
 package de.adihubba.javafx.jfx3d;
 
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
+import de.adihubba.ObjectUtils;
+import de.adihubba.delauney.DelaunayTriangulation;
+import de.adihubba.delauney.Point;
+import de.adihubba.delauney.Triangle;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point3D;
-import javafx.scene.DepthTest;
-import javafx.scene.Node;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
+import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
@@ -27,13 +22,11 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-import de.adihubba.delauney.DelaunayTriangulation;
-import de.adihubba.delauney.Point;
-import de.adihubba.delauney.Triangle;
-import de.adihubba.ObjectUtils;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 
 /**
@@ -41,44 +34,36 @@ import de.adihubba.ObjectUtils;
  */
 public class Mesh3DChartPanel extends JPanel {
 
-    private JFXPanel                           pnlChart;
-    private MeshControlPanel                   controlPanel;
-
-    private Cube                               cube;
-    private AxisOrientation                    axisOrientation;
-    private MeshView                           meshView;
-
-    private List<Node>                         titles;
-    private List<Node>                         labelsX;
-    private List<Node>                         labelsY;
-    private List<Node>                         labelsZ;
-
-    // variables for mouse interaction
-    private double                             mousePosX, mousePosY;
-    private double                             mouseOldX, mouseOldY;
-
-    // size of mesh/box and size of image, which will be used as a texture for the mesh. If the image is bigger, than the texture has more details, but the calculation time increase
-    private int                                size                = 400;
-    private int                                imageSize           = 800;
-
+    // size of mesh/box and size of image, which will be used as a texture for the mesh. If the image is bigger, than
+    // the texture has more details, but the calculation time increase
+    private final int size = 400;
     // initial rotation
-    private final Rotate                       rotateX             = new Rotate(0, Rotate.X_AXIS);
-    private final Rotate                       rotateY             = new Rotate(0, Rotate.Y_AXIS);
-
+    private final Rotate rotateX = new Rotate(30, Rotate.X_AXIS);
+    private final Rotate rotateY = new Rotate(45, Rotate.Y_AXIS);
     // bounds for zooming
-    private final double                       MAX_SCALE           = 20.0;
-    private final double                       MIN_SCALE           = 0.1;
-
-    // ability to rotate a coordinate, because the delauney algorithm doesn't work with all coordinates. 
-    private transient DelauneyModifier         delauneyModifier    = new DefaultDelauneyModifier();
-    private DrawMode                           drawMode            = DrawMode.FILL;
-    private boolean                            dynamicWallsEnabled = true;
-    private transient Function<Double, String> formatterFunction   = this::formatNumber;
+    private final double MAX_SCALE = 20;
+    private final double MIN_SCALE = 0.1;
+    private JFXPanel pnlChart;
+    private MeshControlPanel controlPanel;
+    private Cube cube;
+    private AxisOrientation axisOrientation;
+    private MeshView meshView;
+    private List<Node> titles;
+    private List<Node> labelsX;
+    private List<Node> labelsY;
+    private List<Node> labelsZ;
+    private double mouseOldX, mouseOldY;
+    private int imageSize = 800;
+    // ability to rotate a coordinate, because the delauney algorithm doesn't work with all coordinates.
+    private transient DelauneyModifier delauneyModifier = new DefaultDelauneyModifier();
+    private DrawMode drawMode = DrawMode.FILL;
+    private boolean dynamicWallsEnabled = true;
+    private transient Function<Double, String> formatterFunction = this::formatNumber;
 
     // axis titles
-    private String                             axisTitleX;
-    private String                             axisTitleY;
-    private String                             axisTitleZ;
+    private String axisTitleX;
+    private String axisTitleY;
+    private String axisTitleZ;
 
     public Mesh3DChartPanel() {
         if (Platform.isImplicitExit()) {
@@ -189,7 +174,7 @@ public class Mesh3DChartPanel extends JPanel {
         MeshCalculationComposite calculationObject = MeshCalculationComposite.of(dataPoints, size);
 
         // convert input for delauney algorithm
-        List<Point> normalizedOldPoints = new ArrayList<Point>(calculationObject.getNormalizedPoints().size());
+        List<Point> normalizedOldPoints = new ArrayList<>(calculationObject.getNormalizedPoints().size());
         for (Point3D point : calculationObject.getNormalizedPoints()) {
             normalizedOldPoints.add(delauneyModifier.convertPoint3d4Delauney(point));
         }
@@ -199,8 +184,8 @@ public class Mesh3DChartPanel extends JPanel {
         for (Triangle triangle : triangulation) {
             if (!triangle.isHalfplane()) {
                 calculationObject.addTriangle3D(Triangle3D.of(
-                        delauneyModifier.convertPointFromDelauney(triangle.getA()), 
-                        delauneyModifier.convertPointFromDelauney(triangle.getB()), 
+                        delauneyModifier.convertPointFromDelauney(triangle.getA()),
+                        delauneyModifier.convertPointFromDelauney(triangle.getB()),
                         delauneyModifier.convertPointFromDelauney(triangle.getC())));
             }
         }
@@ -271,9 +256,12 @@ public class Mesh3DChartPanel extends JPanel {
             PickResult pickResult = me.getPickResult();
             if (pickResult != null && pickResult.getIntersectedNode() == meshView) {
                 Point3D clickedPoint = pickResult.getIntersectedPoint();
-                double x = calculationObject.getMinX() + (clickedPoint.getX() * (calculationObject.getMaxX() - calculationObject.getMinX()) / size);
-                double z = calculationObject.getMinZ() + (clickedPoint.getZ() * (calculationObject.getMaxZ() - calculationObject.getMinZ()) / size);
-                double y = calculationObject.getMinY() + (-clickedPoint.getY() * (calculationObject.getMaxY() - calculationObject.getMinY()) / size);
+                double x = calculationObject.getMinX() + (clickedPoint.getX() * (calculationObject
+                        .getMaxX() - calculationObject.getMinX()) / size);
+                double z = calculationObject.getMinZ() + (clickedPoint.getZ() * (calculationObject
+                        .getMaxZ() - calculationObject.getMinZ()) / size);
+                double y = calculationObject.getMinY() + (-clickedPoint.getY() * (calculationObject
+                        .getMaxY() - calculationObject.getMinY()) / size);
                 controlPanel.setSelectedValues(x, y, z);
             }
         });
@@ -297,8 +285,9 @@ public class Mesh3DChartPanel extends JPanel {
     }
 
     private void mouseDragged(MouseEvent me) {
-        mousePosX = me.getSceneX();
-        mousePosY = me.getSceneY();
+        // variables for mouse interaction
+        double mousePosX = me.getSceneX();
+        double mousePosY = me.getSceneY();
         rotateX.setAngle(rotateX.getAngle() - (mousePosY - mouseOldY));
         rotateY.setAngle(rotateY.getAngle() + (mousePosX - mouseOldX));
 
@@ -334,7 +323,7 @@ public class Mesh3DChartPanel extends JPanel {
             double labelYTranslateZ = (angleY < 180 ? 1 : -1) * 0.5 * size;
             titles.get(1).setTranslateX(labelYTranslateX);
             titles.get(1).setTranslateZ(labelYTranslateZ);
-            labelYTranslateZ = !isCubeUpsideDown ? labelYTranslateZ : labelYTranslateZ + (0 * size / 15.0);
+            labelYTranslateZ = !isCubeUpsideDown ? labelYTranslateZ : labelYTranslateZ + size / 15f;
             for (Node label : labelsY) {
                 label.setTranslateX(labelYTranslateX);
                 label.setTranslateZ(labelYTranslateZ);
@@ -352,13 +341,13 @@ public class Mesh3DChartPanel extends JPanel {
 
         }
 
-        List<Node> labels = new ArrayList<Node>(33);
+        List<Node> labels = new ArrayList<>(33);
         labels.addAll(titles);
         labels.addAll(labelsX);
         labels.addAll(labelsY);
         labels.addAll(labelsZ);
 
-        calculateAndRotatoNodes(labels, 0.0, Math.toRadians(angleX), Math.toRadians(angleY));
+        calculateAndRotatoNodes(labels, Math.toRadians(angleX), Math.toRadians(angleY));
 
         mouseOldX = mousePosX;
         mouseOldY = mousePosY;
@@ -369,13 +358,13 @@ public class Mesh3DChartPanel extends JPanel {
         mouseOldY = mouseEvent.getSceneY();
     }
 
-    private void calculateAndRotatoNodes(List<Node> nodes, double alp, double bet, double gam) {
-        double A11 = Math.cos(alp) * Math.cos(gam);
-        double A12 = Math.cos(bet) * Math.sin(alp) + Math.cos(alp) * Math.sin(bet) * Math.sin(gam);
-        double A13 = Math.sin(alp) * Math.sin(bet) - Math.cos(alp) * Math.cos(bet) * Math.sin(gam);
-        double A21 = -Math.cos(gam) * Math.sin(alp);
-        double A22 = Math.cos(alp) * Math.cos(bet) - Math.sin(alp) * Math.sin(bet) * Math.sin(gam);
-        double A23 = Math.cos(alp) * Math.sin(bet) + Math.cos(bet) * Math.sin(alp) * Math.sin(gam);
+    private void calculateAndRotatoNodes(List<Node> nodes, double bet, double gam) {
+        double A11 = Math.cos(0.0) * Math.cos(gam);
+        double A12 = Math.cos(bet) * Math.sin(0.0) + Math.cos(0.0) * Math.sin(bet) * Math.sin(gam);
+        double A13 = Math.sin(0.0) * Math.sin(bet) - Math.cos(0.0) * Math.cos(bet) * Math.sin(gam);
+        double A21 = -Math.cos(gam) * Math.sin(0.0);
+        double A22 = Math.cos(0.0) * Math.cos(bet) - Math.sin(0.0) * Math.sin(bet) * Math.sin(gam);
+        double A23 = Math.cos(0.0) * Math.sin(bet) + Math.cos(bet) * Math.sin(0.0) * Math.sin(gam);
         double A31 = Math.sin(gam);
         double A32 = -Math.cos(gam) * Math.sin(bet);
         double A33 = Math.cos(bet) * Math.cos(gam);
@@ -392,16 +381,16 @@ public class Mesh3DChartPanel extends JPanel {
     }
 
     private void createAxisLegend(MeshCalculationComposite calculationObject) {
-        labelsX = new ArrayList<Node>(10);
-        labelsY = new ArrayList<Node>(10);
-        labelsZ = new ArrayList<Node>(10);
+        labelsX = new ArrayList<>(10);
+        labelsY = new ArrayList<>(10);
+        labelsZ = new ArrayList<>(10);
 
         // for x axis
         for (int i = 0; i < 10; i++) {
             double number = calculationObject.getMinX() + (calculationObject.getSizeX() / 10.0) * i;
-            Text text = new Text(formatterFunction.apply(Double.valueOf(number)));
+            Text text = new Text(formatterFunction.apply(number));
 
-            text.setTranslateX(-0.5 * size + i * (size / 10));
+            text.setTranslateX(-0.5 * size + i * size / 10f);
             text.setTranslateY(0.5 * size);
             text.setTranslateZ(-0.5 * size);
             text.setMouseTransparent(true);
@@ -412,10 +401,10 @@ public class Mesh3DChartPanel extends JPanel {
         // for y axis
         for (int i = 0; i < 10; i++) {
             double number = calculationObject.getMinY() + (calculationObject.getSizeY() / 10.0) * i;
-            Text text = new Text(formatterFunction.apply(Double.valueOf(number)));
+            Text text = new Text(formatterFunction.apply(number));
 
             text.setTranslateX(0.5 * size);
-            text.setTranslateY(0.5 * size - i * (size / 10));
+            text.setTranslateY(0.5 * size - i * size / 10f);
             text.setTranslateZ(0.5 * size);
             text.setMouseTransparent(true);
 
@@ -425,11 +414,11 @@ public class Mesh3DChartPanel extends JPanel {
         // for z axis
         for (int i = 0; i < 10; i++) {
             double number = calculationObject.getMinZ() + (calculationObject.getSizeZ() / 10.0) * i;
-            Text text = new Text(formatterFunction.apply(Double.valueOf(number)));
+            Text text = new Text(formatterFunction.apply(number));
 
             text.setTranslateX(0.5 * size);
             text.setTranslateY(0.5 * size);
-            text.setTranslateZ(-0.5 * size + i * (size / 10));
+            text.setTranslateZ(-0.5 * size + i * size / 10f);
             text.setMouseTransparent(true);
 
             labelsZ.add(text);
@@ -438,7 +427,7 @@ public class Mesh3DChartPanel extends JPanel {
     }
 
     private void createAxisTitles() {
-        titles = new ArrayList<Node>(3);
+        titles = new ArrayList<>(3);
 
         Text label = new Text(axisTitleX);
         label.setTranslateX(-0.05 * size);
@@ -473,14 +462,15 @@ public class Mesh3DChartPanel extends JPanel {
 
             if (pointIndex > result.length() - 3) {
                 result = result.substring(0, pointIndex);
-            } else {
-                result = result.substring(0, maxLength + 1 < pointIndex ? pointIndex : maxLength + 1);
+            }
+            else {
+                result = result.substring(0, Math.max(maxLength + 1, pointIndex));
             }
         }
 
         while (result.length() > 1 && result.endsWith("0")) {
             result = result.substring(0, result.length() - 1);
-        };
+        }
 
         if (result.endsWith(".")) {
             result += "0";
@@ -496,7 +486,8 @@ public class Mesh3DChartPanel extends JPanel {
 
             if (ObjectUtils.smallerDoublePrecision(event.getDeltaY(), 0)) {
                 scale /= delta;
-            } else {
+            }
+            else {
                 scale *= delta;
             }
 

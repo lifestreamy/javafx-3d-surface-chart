@@ -8,7 +8,7 @@ import javafx.scene.shape.Box;
 
 
 /**
- * Help for orientation during development 
+ * Help for orientation during development
  */
 public class AxisOrientation extends Group {
 

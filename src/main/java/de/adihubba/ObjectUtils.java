@@ -6,10 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 
+@SuppressWarnings("unchecked")
 public class ObjectUtils {
 
-    private static final int      DEFAULT_DOUBLE_PRECISION = 8;
-    private static final double[] POWER_OF_TEN             = new double[15];
+    private static final int DEFAULT_DOUBLE_PRECISION = 8;
+    private static final double[] POWER_OF_TEN = new double[15];
 
     static {
         for (int i = 0; i < POWER_OF_TEN.length; i++) {
@@ -23,12 +24,10 @@ public class ObjectUtils {
 
     public static boolean smallerOrEqualsDoublePrecision(double double1, double double2, int precision) {
         // try to save the POWER operation
-        double factor = (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
+        double factor =
+                (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
         long result = Math.round((double1 - double2) * factor);
-        if (result <= 0) {
-            return true;
-        }
-        return false;
+        return result <= 0;
     }
 
     public static boolean equalsDoublePrecision(double double1, double double2) {
@@ -47,7 +46,8 @@ public class ObjectUtils {
             return false;
         }
         // try to save the POWER operation
-        double factor = (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
+        double factor =
+                (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
         return (absDifference * factor < 1);
     }
 
@@ -57,14 +57,13 @@ public class ObjectUtils {
 
     public static boolean smallerDoublePrecision(double double1, double double2, int precision) {
         // try to save the POWER operation
-        double factor = (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
+        double factor =
+                (precision >= 0 && precision < POWER_OF_TEN.length) ? POWER_OF_TEN[precision] : Math.pow(10, precision);
         long result = Math.round((double1 - double2) * factor);
-        if (result < 0) {
-            return true;
-        }
-        return false;
+        return result < 0;
     }
 
+    @SafeVarargs
     public static <O> List<O> asReadonlyList(O... objects) {
         return objects == null ? Collections.EMPTY_LIST : Arrays.asList(objects);
     }

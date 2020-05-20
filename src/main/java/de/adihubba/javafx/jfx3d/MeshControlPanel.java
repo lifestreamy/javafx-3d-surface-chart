@@ -1,18 +1,14 @@
 package de.adihubba.javafx.jfx3d;
 
 
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import de.adihubba.swing.JBasicFormattedLabel;
 import de.adihubba.swing.ListLayout;
 import de.adihubba.swing.ValueChangedListener;
 import de.adihubba.swing.radiobutton.YesNoRadioButtonHorPanel;
 import javafx.scene.shape.DrawMode;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -20,7 +16,7 @@ import javafx.scene.shape.DrawMode;
  */
 public class MeshControlPanel extends JPanel {
 
-    private final Mesh3DChartPanel   control;
+    private final Mesh3DChartPanel control;
 
     private YesNoRadioButtonHorPanel showOrientationcross;
     private YesNoRadioButtonHorPanel interpolateValues;
@@ -32,12 +28,12 @@ public class MeshControlPanel extends JPanel {
     private YesNoRadioButtonHorPanel showFrontWall;
     private YesNoRadioButtonHorPanel showBackWall;
 
-    private JBasicFormattedLabel     lblX;
-    private JBasicFormattedLabel     lblY;
-    private JBasicFormattedLabel     lblZ;
-    private JBasicFormattedLabel     txtX;
-    private JBasicFormattedLabel     txtY;
-    private JBasicFormattedLabel     txtZ;
+    private JBasicFormattedLabel lblX;
+    private JBasicFormattedLabel lblY;
+    private JBasicFormattedLabel lblZ;
+    private JBasicFormattedLabel txtX;
+    private JBasicFormattedLabel txtY;
+    private JBasicFormattedLabel txtZ;
 
     public MeshControlPanel(Mesh3DChartPanel control) {
         this.control = control;

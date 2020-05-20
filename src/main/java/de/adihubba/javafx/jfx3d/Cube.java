@@ -1,10 +1,10 @@
 package de.adihubba.javafx.jfx3d;
 
 
-import java.util.function.Consumer;
-
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
+
+import java.util.function.Consumer;
 
 
 /**
@@ -66,52 +66,52 @@ public class Cube extends Group {
         this.getChildren().addAll(front, back, right, left, top, bottom);
     }
 
-    public void setFrontWallVisible(boolean visible) {
-        front.setVisible(visible);
-    }
-
-    public void setBackWallVisible(boolean visible) {
-        back.setVisible(visible);
-    }
-
-    public void setRightWallVisible(boolean visible) {
-        right.setVisible(visible);
-    }
-
-    public void setLeftWallVisible(boolean visible) {
-        left.setVisible(visible);
-    }
-
-    public void setTopWallVisible(boolean visible) {
-        top.setVisible(visible);
-    }
-
-    public void setBottomWallVisible(boolean visible) {
-        bottom.setVisible(visible);
-    }
-
     public boolean isFrontWallVisible() {
         return front.isVisible();
+    }
+
+    public void setFrontWallVisible(boolean visible) {
+        front.setVisible(visible);
     }
 
     public boolean isBackWallVisible() {
         return back.isVisible();
     }
 
+    public void setBackWallVisible(boolean visible) {
+        back.setVisible(visible);
+    }
+
     public boolean isRightWallVisible() {
         return right.isVisible();
+    }
+
+    public void setRightWallVisible(boolean visible) {
+        right.setVisible(visible);
     }
 
     public boolean isLeftWallVisible() {
         return left.isVisible();
     }
 
+    public void setLeftWallVisible(boolean visible) {
+        left.setVisible(visible);
+    }
+
     public boolean isTopWallVisible() {
         return top.isVisible();
     }
 
+    public void setTopWallVisible(boolean visible) {
+        top.setVisible(visible);
+    }
+
     public boolean isBottomWallVisible() {
         return bottom.isVisible();
+    }
+
+    public void setBottomWallVisible(boolean visible) {
+        bottom.setVisible(visible);
     }
 
     public void applyOnAllWalls(Consumer<Wall> consumer) {

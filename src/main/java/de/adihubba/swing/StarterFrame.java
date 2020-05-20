@@ -25,18 +25,17 @@ public class StarterFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    //EDITED BY Timofey Kochetkov https://github.com/TimofeyKochetkov/javafx-3d-surface-chart
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         double time;
-        System.out.println("Enter the value of TIME parameter");
+        System.out.println("Введите значение параметра времени для графика");
         time = Double.parseDouble(sc.nextLine());
         System.out.printf("Time == %f \n", time);
         System.out
-                .println("Enter the path to the folder containing formatted files with coordinates");
+                .println("Введите адрес папки с файлами, содержащими координаты, или оставьте следующую строку пустой");
         File[] files = new File(sc.nextLine()).listFiles();
-        if (files == null) System.out.println("No files were added to the plotting");
+        if (files == null) System.out.println("Данные о файлах не были введены");
         else {
             int c = 1;
             for (File file : files) {
@@ -44,7 +43,7 @@ public class StarterFrame extends JFrame {
                     final_Points.addAll(getPointsFromFile(file));
                     System.out.println(file.toString() + " --- File No. " + c++);
                 } catch (IOException e) {
-                    System.out.println("Error with parsing the file");
+                    System.out.println("Ошибка с файлом");
                 }
             }
         }

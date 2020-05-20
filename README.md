@@ -1,4 +1,6 @@
 # javafx-3d-surface-chart
+CAN BE USED TO DRAW OVERLAPPING SURFACES
+
 UPDATED and fixed by Tim Kochetkov over a course of a single day (MADE INTO A CUSTOM PROJECT)
 A demo of a JavaFX application, which can plot 3D points to a surface chart with delauney triangulation.
 

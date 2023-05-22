@@ -1,11 +1,12 @@
 # javafx-3d-surface-chart
-CAN BE USED TO DRAW OVERLAPPING SURFACES
+Can be used to draw overlapping surfaces.
 
-UPDATED and fixed by Tim Kochetkov over a course of a single day (MADE INTO A CUSTOM PROJECT)
+Updated and fixed by Tim Kochetkov (made into a custom project)
 A demo of a JavaFX application, which can plot 3D points to a surface chart with delauney triangulation.
 
-PLEASE NOTICE THAT THE ALGORYTHM IS NOT EFFICIENT WITH REPEATING x, y COORDINATES (IF AT ALL), TAKES A WHILE TO RENDER
-ALSO NOTE THAT THE ORIGINAL CREATOR CHANGED THE ORDER OF (X, Y, Z) TO (X, Z, Y) 
+PLEASE NOTICE THAT THE ALGORITHM IS NOT EFFICIENT WITH REPEATING x, y COORDINATES (IF AT ALL), TAKES A WHILE TO RENDER
+Also note that the original creator had changed (X, Y, Z) to (X, Z, Y) 
+
 You can start this app using the main method in de.adihubba.swing.StarterFrame
 
 ![alt tag](https://github.com/TimofeyKochetkov/javafx-3d-surface-chart/blob/TimofeyKochetkov-docs/2020-05-20%2016-56-55.png)
